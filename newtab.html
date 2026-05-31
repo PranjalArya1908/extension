@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Tab</title>
+
+  <!-- Base + active theme -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" id="theme-stylesheet" href="css/themes/minimalistic-light.css" />
+
+  <!-- Component stylesheets (shared across both modes) -->
+  <link rel="stylesheet" href="css/components/search.css" />
+  <link rel="stylesheet" href="css/components/clock.css" />
+  <link rel="stylesheet" href="css/components/greeting.css" />
+  <link rel="stylesheet" href="css/components/quicklinks.css" />
+  <link rel="stylesheet" href="css/components/stickynotes.css" />
+  <link rel="stylesheet" href="css/components/widgets.css" />
+  <link rel="stylesheet" href="css/components/todo.css" />
+  <link rel="stylesheet" href="css/components/history.css" />
+</head>
+<body>
+
+  <div id="bg-layer" class="bg-layer"></div>
+
+  <div id="app" class="app-shell">
+
+    <!-- ══════════════════════════════════════════════════
+         MINIMALISTIC LAYOUT
+         3-col: sidebar | clock+search+notes | greeting+board
+         ══════════════════════════════════════════════════ -->
+    <main id="layout-minimalistic" class="layout-panel page-grid-minimal">
+
+      <!-- Sidebar toggle handle -->
+      <button id="btn-sidebar-toggle" class="sidebar-toggle-handle" title="Hide Sidebar">
+        <span class="toggle-icon">◀</span>
+      </button>
+
+      <!-- LEFT: vertical quick links sidebar -->
+      <aside class="col-sidebar-min" id="col-sidebar">
+        <div id="slot-quicklinks" class="slot"></div>
+      </aside>
+
+      <!-- CENTER: clock + search + sticky creator -->
+      <div class="col-center-min">
+        <div id="slot-clock"        class="slot slot-clock"></div>
+        <div id="slot-search-min"   class="slot slot-search"></div>
+        <div id="slot-note-creator" class="slot slot-note-creator"></div>
+      </div>
+
+      <!-- RIGHT: greeting card + sticky board -->
+      <div class="col-right-min">
+        <div id="slot-greeting" class="slot slot-greeting-card"></div>
+      </div>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════
+         WORK LAYOUT
+         3-col: history | search+widgets | todo
+         ══════════════════════════════════════════════════ -->
+    <main id="layout-work" class="layout-panel page-grid-work">
+
+      <!-- LEFT: recent tabs & browser history -->
+      <aside class="col-left-work">
+        <div class="panel-card" id="slot-history">
+          <!-- Filled by HistoryComponent -->
+        </div>
+      </aside>
+
+      <!-- CENTER: search bar + widget tabs + widget display -->
+      <div class="col-center-work">
+        <div id="slot-search-work" class="slot-search"></div>
+
+        <div class="widget-area">
+          <div class="widget-tabs" id="widget-tabs">
+            <button class="widget-tab active" data-widget="music">
+              <span class="widget-tab-icon">🎵</span>
+              <span class="widget-tab-label">Music</span>
+              <span class="widget-tab-sub">YT Music</span>
+            </button>
+            <button class="widget-tab" data-widget="ai">
+              <span class="widget-tab-icon">🤖</span>
+              <span class="widget-tab-label">AI Mode</span>
+              <span class="widget-tab-sub">ChatGPT</span>
+            </button>
+            <button class="widget-tab" data-widget="weather">
+              <span class="widget-tab-icon">🌤</span>
+              <span class="widget-tab-label">Weather</span>
+              <span class="widget-tab-sub">Updates</span>
+            </button>
+            <button class="widget-tab" data-widget="scribble">
+              <span class="widget-tab-icon">✏️</span>
+              <span class="widget-tab-label">Scribble</span>
+              <span class="widget-tab-sub">Write thoughts</span>
+            </button>
+          </div>
+
+          <!-- Persistent mini music player — shown when audio is playing on another tab -->
+          <div id="music-mini-player" class="music-mini-player" style="display:none;">
+            <div class="mmp-vis" id="mmp-vis">
+              <div class="mmp-bar"></div>
+              <div class="mmp-bar"></div>
+              <div class="mmp-bar"></div>
+              <div class="mmp-bar"></div>
+              <div class="mmp-bar"></div>
+            </div>
+            <div class="mmp-info">
+              <span class="mmp-name" id="mmp-name">Lofi Chill Beats</span>
+              <span class="mmp-artist" id="mmp-artist">Chillsky Radio</span>
+            </div>
+            <button class="mmp-toggle" id="mmp-toggle" title="Play / Pause">⏸</button>
+            <button class="mmp-goto" id="mmp-goto" title="Open Music tab">🎵</button>
+          </div>
+
+          <div class="widget-display" id="widget-display"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: To-do list -->
+      <aside class="col-right-work">
+        <div class="panel-card" id="slot-todo">
+          <!-- Filled by TodoComponent -->
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════
+         SHARED BOTTOM BAR (always visible)
+         ══════════════════════════════════════════════════ -->
+    <footer id="bottom-bar" class="bottom-bar">
+      <!-- Left: mode toggle -->
+      <div class="mode-toggle" id="mode-toggle">
+        <button class="mode-btn active" id="btn-minimalistic" data-mode="minimalistic">Minimal</button>
+        <button class="mode-btn"        id="btn-work"          data-mode="work">Work</button>
+      </div>
+
+      <!-- Center: live clock -->
+      <div class="bottom-clock" id="bottom-clock"></div>
+
+      <!-- Right: dark mode toggle -->
+      <button id="btn-light-dark" class="dark-toggle-btn" title="Toggle dark mode">
+        <span id="light-dark-icon">☀️</span>
+        <span id="light-dark-label">Light</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/theme-manager.js"></script>
+
+  <!-- Minimalistic mode components -->
+  <script src="js/components/clock.js"></script>
+  <script src="js/components/search.js"></script>
+  <script src="js/components/greeting.js"></script>
+  <script src="js/components/quicklinks.js"></script>
+  <script src="js/components/stickynotes.js"></script>
+
+  <!-- Work mode components -->
+  <script src="js/components/widgets.js"></script>
+  <script src="js/components/todo.js"></script>
+  <script src="js/components/history.js"></script>
+
+  <script src="js/newtab.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+/* ============================================================
+   todo.css — Right panel: to-do list with tick & remove
+   ============================================================ */
+
+#slot-todo {
+  padding: 0;
+}
+
+.todo-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px 16px;
+  gap: 14px;
+}
+
+/* Header */
+.todo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.todo-title {
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.todo-count {
+  font-family: var(--font-primary);
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  background: var(--color-border);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+}
+
+/* Add task input row */
+.todo-add-row {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.todo-input {
+  flex: 1;
+  background: var(--color-input-bg, var(--color-card-bg-solid));
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition-fast);
+  caret-color: var(--color-accent);
+}
+
+.todo-input::placeholder {
+  color: var(--color-text-subtle);
+  font-style: italic;
+}
+
+.todo-input:focus {
+  border-color: var(--color-accent);
+}
+
+.todo-add-btn {
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-md);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-inverse, #ffffff);
+  font-size: 1.1rem;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.todo-add-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.08);
+}
+
+/* Task list */
+.todo-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+/* Individual task item */
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  animation: todoItemAppear 0.25s ease both;
+}
+
+@keyframes todoItemAppear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.todo-item:hover {
+  background: var(--color-icon-btn-hover);
+  border-color: var(--color-border);
+}
+
+.todo-item.done {
+  opacity: 0.55;
+}
+
+/* Custom checkbox */
+.todo-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--color-border-strong);
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  position: relative;
+}
+
+.todo-check:hover {
+  border-color: var(--color-accent);
+}
+
+.todo-item.done .todo-check {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.todo-check-mark {
+  display: none;
+  font-size: 0.7rem;
+  color: var(--color-text-inverse, #ffffff);
+  line-height: 1;
+}
+
+.todo-item.done .todo-check-mark {
+  display: flex;
+}
+
+/* Task text */
+.todo-text {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.4;
+  word-break: break-word;
+  transition: color var(--transition-fast);
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: var(--color-text-subtle);
+}
+
+/* Remove button */
+.todo-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-subtle);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+
+.todo-item:hover .todo-remove-btn {
+  opacity: 1;
+}
+
+.todo-remove-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Stats footer */
+.todo-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.todo-footer-stat {
+  font-family: var(--font-primary);
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+}
+
+.todo-clear-done {
+  background: none;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: 0.6rem;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.todo-clear-done:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* Empty state */
+.todo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  text-align: center;
+  user-select: none;
+}
+
+.todo-empty-icon {
+  font-size: 1.8rem;
+  opacity: 0.5;
+}

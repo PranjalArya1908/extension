@@ -1,0 +1,264 @@
+/* ============================================================
+   clock.css — Bold full-card clock with celestial sun/moon dial
+   ============================================================ */
+
+/* ── Card ─────────────────────────────────────────────────── */
+.section-clock {
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 2.8vw, 34px) clamp(22px, 3vw, 36px);
+  user-select: none;
+  animation: clockReveal 0.5s ease both;
+  min-height: clamp(220px, 38vh, 340px);
+  overflow: hidden;
+  position: relative;
+}
+
+body[data-dark="true"] .section-clock {
+  border-color: var(--color-border-dark);
+}
+
+@keyframes clockReveal {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Split Grid Layout ────────────────────────────────────── */
+.clock-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: stretch;
+  height: 100%;
+}
+
+/* ── Left Side: Time Details ──────────────────────────────── */
+.clock-time-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.clock-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.clock-label {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.clock-ampm {
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-clock-ampm);
+  background: var(--color-accent-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.clock-main-time {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+  font-family: 'JapaneseCantRead', 'Inter', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7.2rem); /* Adjusted font size for 2-column fit */
+  font-weight: normal;
+  color: var(--color-clock-digit);
+  letter-spacing: -0.02em;
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+.clock-hhmm {
+  white-space: nowrap;
+}
+
+.clock-main-sep {
+  animation: blinkSep 1s step-start infinite;
+  display: inline-block;
+  margin: 0 0.01em;
+  color: var(--color-clock-sep);
+}
+
+@keyframes blinkSep {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.10; }
+}
+
+.clock-seconds-block {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.clock-sec-label {
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.clock-sec-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-weight: normal;
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  min-width: 2ch;
+  display: inline-block;
+}
+
+.clock-date {
+  font-family: var(--font-primary);
+  font-size: clamp(0.72rem, 0.95vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-clock-date);
+}
+
+
+/* ── Right Side: Weather display inside clock ────────────── */
+.clock-weather-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 1.5px solid var(--color-border);
+  padding-left: clamp(16px, 2vw, 24px);
+  min-width: 0;
+}
+
+.clock-weather-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+}
+
+.weather-loading-icon {
+  font-size: 1.8rem;
+  animation: loadingSpin 2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes loadingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.weather-loading-text {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.clock-weather-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.2vw, 14px);
+  width: 100%;
+}
+
+.clock-weather-emoji {
+  font-size: clamp(2.2rem, 3.2vw, 3rem);
+  line-height: 1;
+}
+
+.clock-weather-temp {
+  font-family: var(--font-primary);
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.clock-weather-desc {
+  font-family: var(--font-primary);
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  font-weight: 700;
+  color: var(--color-text-subtle);
+  margin-top: 4px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.clock-weather-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.clock-weather-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px;
+  background: var(--color-icon-btn-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.clock-weather-stat .weather-stat-val {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Error state inside clock */
+.clock-weather-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.weather-error-text {
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  color: var(--color-text-subtle);
+  line-height: 1.4;
+}
+
+.weather-retry-btn {
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--color-text-inverse, #fff);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+.weather-retry-btn:hover { opacity: 0.85; }
+

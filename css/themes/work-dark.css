@@ -1,0 +1,41 @@
+/* ============================================================
+   work-dark.css
+   Theme: Work | Mode: Dark
+   ============================================================
+   Denser, more structured, productivity-focused palette.
+   More visual hierarchy, accent colors for urgency/status.
+   ============================================================ */
+
+:root {
+  --color-bg:               #111318;
+  --color-bg-image:         url('../assets/backgrounds/work/dark/bg.jpg');
+
+  --color-text:             #dde1ea;
+  --color-text-muted:       #7a8196;
+  --color-text-subtle:      #4a5068;
+
+  --color-accent:           #YOUR_ACCENT;
+  --color-accent-hover:     #YOUR_ACCENT_HOVER;
+
+  /* Status colors (for tasks, priorities, etc.) */
+  --color-status-high:      #YOUR_HIGH_PRIORITY_COLOR;
+  --color-status-mid:       #YOUR_MID_PRIORITY_COLOR;
+  --color-status-low:       #YOUR_LOW_PRIORITY_COLOR;
+  --color-status-done:      #YOUR_DONE_COLOR;
+
+  --color-card-bg:          rgba(255,255,255,0.04);
+  --color-panel-bg:         rgba(17,19,24,0.90);
+  --color-topbar-bg:        rgba(17,19,24,0.70);
+  --color-border:           rgba(255,255,255,0.07);
+
+  --color-toggle-track:     rgba(255,255,255,0.07);
+  --color-toggle-active:    rgba(255,255,255,0.15);
+  --color-toggle-active-text: #ffffff;
+
+  --color-icon-btn-bg:      rgba(255,255,255,0.06);
+  --color-icon-btn-hover:   rgba(255,255,255,0.12);
+}
+
+.bg-layer {
+  background-image: var(--color-bg-image);
+}

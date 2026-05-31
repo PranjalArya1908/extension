@@ -1,0 +1,186 @@
+/* ============================================================
+   search.css — Clean, modern search bar (minimalistic light)
+   ============================================================ */
+
+.section-search,
+.slot-search {
+  width: 100%;
+  position: relative;
+  /* Light Mode Moonlight Glow colors */
+  --moonlight-color: rgba(186, 230, 253, 0.25);
+  --moonlight-color-focus: rgba(186, 230, 253, 0.85);
+}
+
+body[data-dark="true"] .section-search,
+body[data-dark="true"] .slot-search {
+  /* Dark Mode Moonlight Glow colors */
+  --moonlight-color: rgba(224, 242, 254, 0.1);
+  --moonlight-color-focus: rgba(224, 242, 254, 0.55);
+}
+
+/* ── Outer wrapper ────────────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-search-bg);
+  border: 1.5px solid var(--color-input-border);
+  border-radius: var(--radius-full);
+  padding: 14px 20px;
+  box-shadow: 0 0 12px 2px var(--moonlight-color-focus);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* Dark mode: white border */
+body[data-dark="true"] .search-bar {
+  border-color: var(--color-border-dark);
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-accent);
+  /* Moonlight glow slightly enhanced on focus */
+  box-shadow: 0 0 16px 3.5px var(--moonlight-color-focus);
+  transform: translateY(-1px);
+}
+
+/* ── Search icon ──────────────────────────────────────────── */
+.search-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text-subtle);
+  transition: color 0.2s ease;
+}
+
+.search-bar:focus-within .search-icon {
+  color: var(--color-accent);
+}
+
+.search-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Input ────────────────────────────────────────────────── */
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-text);
+  caret-color: var(--color-accent);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-subtle);
+  font-weight: 300;
+}
+
+/* ── Engine pill ──────────────────────────────────────────── */
+.search-engine-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.22s ease, color 0.22s ease, transform 0.15s ease;
+}
+
+.search-engine-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Google colors */
+.search-engine-toggle[data-engine="google"] {
+  background: rgba(66, 133, 244, 0.12);
+  color: #1a73e8;
+}
+body[data-dark="true"] .search-engine-toggle[data-engine="google"] {
+  background: rgba(66, 133, 244, 0.22);
+  color: #8ab4f8;
+}
+.search-engine-toggle[data-engine="google"]:hover {
+  background: #1a73e8;
+  color: #ffffff;
+}
+
+/* DuckDuckGo colors */
+.search-engine-toggle[data-engine="duckduckgo"] {
+  background: rgba(222, 88, 51, 0.12);
+  color: #c84523;
+}
+body[data-dark="true"] .search-engine-toggle[data-engine="duckduckgo"] {
+  background: rgba(222, 88, 51, 0.22);
+  color: #ff8a65;
+}
+.search-engine-toggle[data-engine="duckduckgo"]:hover {
+  background: #de5833;
+  color: #ffffff;
+}
+
+/* Bing colors */
+.search-engine-toggle[data-engine="bing"] {
+  background: rgba(0, 130, 114, 0.12);
+  color: #007062;
+}
+body[data-dark="true"] .search-engine-toggle[data-engine="bing"] {
+  background: rgba(0, 130, 114, 0.22);
+  color: #00c0a3;
+}
+.search-engine-toggle[data-engine="bing"]:hover {
+  background: #008272;
+  color: #ffffff;
+}
+
+/* Brave colors */
+.search-engine-toggle[data-engine="brave"] {
+  background: rgba(255, 80, 0, 0.12);
+  color: #e04400;
+}
+body[data-dark="true"] .search-engine-toggle[data-engine="brave"] {
+  background: rgba(255, 80, 0, 0.22);
+  color: #ff9e66;
+}
+.search-engine-toggle[data-engine="brave"]:hover {
+  background: #ff5000;
+  color: #ffffff;
+}
+
+/* ── Shortcut hint below bar ──────────────────────────────── */
+.search-hint {
+  text-align: center;
+  font-family: var(--font-primary);
+  font-size: 0.68rem;
+  color: var(--color-text-subtle);
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+
+.search-hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  background: var(--color-card-bg-solid);
+}

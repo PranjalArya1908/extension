@@ -1,0 +1,246 @@
+/* ============================================================
+   stickynotes.css — Sticky Notes System (Masonry board & draft notes)
+   ============================================================ */
+
+/* ── LEFT COLUMN: Note Creator Card ───────────────────────── */
+.section-note-creator {
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: clamp(16px, 2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: noteCreatorReveal 0.5s ease both;
+  flex: 1;
+  min-height: 240px; /* Base minimum height */
+}
+
+body[data-dark="true"] .section-note-creator {
+  border-color: var(--color-border-dark);
+}
+
+@keyframes noteCreatorReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.note-creator-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.note-creator-title {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.note-creator-hint {
+  font-family: var(--font-primary);
+  font-size: 0.58rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Interactive Note Draft Pad ──────────────────────────── */
+.note-draft-pad {
+  width: 100%;
+  background: var(--draft-note-color, #fef08a); /* Default yellow */
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: grab;
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background 0.25s ease;
+  user-select: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  flex: 1;
+  min-height: 120px;
+}
+
+.note-draft-pad:active {
+  cursor: grabbing;
+}
+
+.note-draft-pad.dragging {
+  opacity: 0.6;
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.note-draft-textarea {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: transparent;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #1c1917; /* Dark charcoal text for ultimate contrast */
+  caret-color: #1c1917;
+  padding: 0;
+}
+
+.note-draft-textarea::placeholder {
+  color: rgba(28, 25, 23, 0.45);
+  font-style: italic;
+}
+
+/* ── Note Toolbar & Actions ────────────────────────────── */
+.note-creator-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.color-presets {
+  display: flex;
+  gap: 8px;
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+}
+
+.color-dot.active {
+  transform: scale(1.15);
+  border-color: #1c1917;
+}
+
+/* Color definitions */
+.dot-yellow  { background-color: #fef08a; }
+.dot-pink    { background-color: #fbcfe8; }
+.dot-blue    { background-color: #bfdbfe; }
+.dot-green   { background-color: #bbf7d0; }
+.dot-orange  { background-color: #fed7aa; }
+
+.btn-add-note {
+  background: var(--color-accent);
+  color: var(--color-text-inverse, #ffffff);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn-add-note:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ── RIGHT COLUMN: Dynamic Masonry Layout ─────────────────── */
+.sticky-notes-masonry {
+  column-count: 2;
+  column-gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .sticky-notes-masonry {
+    column-count: 1;
+  }
+}
+
+/* ── Sticky Note Items ────────────────────────────────────── */
+.sticky-note-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  border: 1px solid rgba(0,0,0,0.06);
+  animation: noteAppear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.sticky-note-item:hover {
+  transform: translateY(-2px) rotate(0.5deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.09);
+}
+
+@keyframes noteAppear {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sticky-note-text {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #1c1917;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding-right: 18px;
+}
+
+.sticky-note-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: rgba(28, 25, 23, 0.35);
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.sticky-note-delete:hover {
+  color: #1c1917;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Empty State visual */
+.sticky-board-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 140px;
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  text-align: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.sticky-board-empty-icon {
+  font-size: 1.6rem;
+  opacity: 0.6;
+}

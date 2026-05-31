@@ -1,0 +1,184 @@
+/* ============================================================
+   greeting.css — Right-column greeting card
+   Layout: hello + username (top) → Today's Focus (mid) → quote (bottom)
+   ============================================================ */
+
+/* ── Card ─────────────────────────────────────────────────── */
+.section-greeting {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3.5vw, 42px) clamp(22px, 3vw, 40px);
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  min-height: clamp(200px, 40vh, 380px);
+  animation: greetingReveal 0.5s ease both;
+  overflow: hidden;
+}
+
+/* Dark mode: white border */
+body[data-dark="true"] .section-greeting {
+  border-color: var(--color-border-dark);
+}
+
+@keyframes greetingReveal {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── TOP: hello + username ────────────────────────────────── */
+.greeting-top {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.greeting-hello {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-weight: normal;
+  color: var(--color-text-subtle);
+  line-height: 1;
+  user-select: none;
+}
+
+.greeting-username-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.greeting-username {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.2vw, 3.8rem);
+  font-weight: normal;
+  color: var(--color-text);
+  line-height: 1;
+  cursor: pointer;
+  border-bottom: 1.5px dashed transparent;
+  transition: border-color 0.2s ease, opacity 0.15s ease;
+  outline: none;
+}
+
+.greeting-username:hover {
+  opacity: 0.72;
+  border-bottom-color: var(--color-border-strong);
+}
+
+.greeting-edit-hint {
+  font-family: var(--font-primary);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-text-subtle);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.greeting-username-wrap:hover .greeting-edit-hint {
+  opacity: 1;
+}
+
+/* Inline name input */
+.greeting-name-input {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.2vw, 3.8rem);
+  font-weight: normal;
+  color: var(--color-text);
+  line-height: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--color-accent);
+  outline: none;
+  padding: 0;
+  width: 100%;
+  caret-color: var(--color-accent);
+}
+
+/* ── MID: Sticky Notes Board Container ─────────────────────── */
+.greeting-board-block {
+  margin-top: clamp(18px, 2.5vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0; /* lets scroll work */
+}
+
+.greeting-board-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.greeting-board-label {
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.greeting-board-hint {
+  font-family: var(--font-primary);
+  font-size: 0.58rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.sticky-notes-board {
+  flex: 1;
+  min-height: 180px;
+  overflow-y: auto;
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  transition: border-color var(--transition-base), background var(--transition-base);
+}
+
+.sticky-notes-board.drag-over {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+/* ── Spacer ───────────────────────────────────────────────── */
+.greeting-spacer { flex: 1; }
+
+/* ── BOTTOM: motivational quote ──────────────────────────── */
+.greeting-quote-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+  animation: quoteFadeIn 0.7s ease both;
+  animation-delay: 0.3s;
+}
+
+@keyframes quoteFadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.greeting-quote {
+  font-family: var(--font-primary);
+  font-size: clamp(0.73rem, 1.05vw, 0.86rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.greeting-quote-attr {
+  font-family: var(--font-primary);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+}

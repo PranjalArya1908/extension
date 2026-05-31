@@ -1,0 +1,67 @@
+/* ============================================================
+   minimalistic-dark.css
+   Theme: Minimalistic | Mode: Dark
+   ============================================================ */
+
+:root {
+  /* ── Core palette ─── */
+  --color-bg:               #0f0f0f;
+  --color-bg-image:         url('../assets/backgrounds/minimalistic/dark/bg.jpg');
+
+  --color-text:             #e8e8e8;
+  --color-text-muted:       #888888;
+  --color-text-subtle:      #505050;
+  --color-text-inverse:     #111111;
+
+  --color-accent:           #a0aec0;
+  --color-accent-hover:     #cbd5e0;
+  --color-accent-rgb:       160, 174, 192;
+  --color-accent-light:     rgba(160, 174, 192, 0.12);
+
+  /* ── Dark mode card border (white) ─── */
+  --color-border-dark:      rgba(255, 255, 255, 0.22);
+
+  /* ── Surfaces ─────────────────────── */
+  --color-card-bg:          rgba(255, 255, 255, 0.04);
+  --color-card-bg-solid:    #191919;
+  --color-panel-bg:         rgba(15, 15, 15, 0.94);
+  --color-topbar-bg:        rgba(15, 15, 15, 0.70);
+  --color-bottombar-bg:     rgba(15, 15, 15, 0.80);
+  --color-border:           rgba(255, 255, 255, 0.08);
+  --color-border-strong:    rgba(255, 255, 255, 0.14);
+
+  /* ── Input ─────────────────────────── */
+  --color-input-bg:         #191919;
+  --color-input-border:     rgba(255, 255, 255, 0.14);
+  --color-input-focus:      rgba(160, 174, 192, 0.30);
+
+  /* ── Toggle ────────────────────────── */
+  --color-toggle-track:     rgba(255, 255, 255, 0.08);
+  --color-toggle-active:    rgba(255, 255, 255, 0.20);
+  --color-toggle-active-text: #ffffff;
+
+  /* ── Icon buttons ──────────────────── */
+  --color-icon-btn-bg:      rgba(255, 255, 255, 0.07);
+  --color-icon-btn-hover:   rgba(255, 255, 255, 0.14);
+
+  /* ── Clock ─────────────────────────── */
+  --color-clock-digit:      #e8e8e8;
+  --color-clock-sep:        #3a3a3a;
+  --color-clock-ampm:       #606060;
+  --color-clock-date:       #606060;
+
+  /* ── Search ────────────────────────── */
+  --color-search-bg:        #191919;
+  --color-search-shadow:    0 2px 16px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.25);
+  --color-search-shadow-focus: 0 4px 24px rgba(160,174,192,0.15), 0 1px 4px rgba(0,0,0,0.3);
+
+  /* ── Greeting ──────────────────────── */
+  --color-greeting-name:    #e8e8e8;
+  --color-greeting-sub:     #606060;
+}
+
+/* Background */
+.bg-layer {
+  background: var(--color-bg);
+  background-image: var(--color-bg-image);
+}

@@ -1,0 +1,37 @@
+/* ============================================================
+   work-light.css
+   Theme: Work | Mode: Light
+   ============================================================ */
+
+:root {
+  --color-bg:               #eef0f5;
+  --color-bg-image:         url('../assets/backgrounds/work/light/bg.jpg');
+
+  --color-text:             #1c1f2e;
+  --color-text-muted:       #5a6382;
+  --color-text-subtle:      #9aa0b8;
+
+  --color-accent:           #YOUR_ACCENT;
+  --color-accent-hover:     #YOUR_ACCENT_HOVER;
+
+  --color-status-high:      #YOUR_HIGH_PRIORITY_COLOR;
+  --color-status-mid:       #YOUR_MID_PRIORITY_COLOR;
+  --color-status-low:       #YOUR_LOW_PRIORITY_COLOR;
+  --color-status-done:      #YOUR_DONE_COLOR;
+
+  --color-card-bg:          rgba(255,255,255,0.70);
+  --color-panel-bg:         rgba(238,240,245,0.92);
+  --color-topbar-bg:        rgba(238,240,245,0.80);
+  --color-border:           rgba(0,0,0,0.07);
+
+  --color-toggle-track:     rgba(0,0,0,0.06);
+  --color-toggle-active:    rgba(255,255,255,0.95);
+  --color-toggle-active-text: #1c1f2e;
+
+  --color-icon-btn-bg:      rgba(0,0,0,0.04);
+  --color-icon-btn-hover:   rgba(0,0,0,0.09);
+}
+
+.bg-layer {
+  background-image: var(--color-bg-image);
+}

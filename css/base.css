@@ -1,0 +1,545 @@
+/* ============================================================
+   base.css — Global resets, CSS custom properties, layout
+   Both minimalistic & work layouts live here, toggled by data-mode
+   ============================================================ */
+
+/* ── Fonts ──────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'JapaneseCantRead';
+  src: url('../assets/fonts/JAPANESE_CANT_READ_v2.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --font-display:  'JapaneseCantRead', cursive;
+  --font-primary:  'Inter', sans-serif;
+  --font-mono:     'JapaneseCantRead', monospace;
+
+  /* Font sizes */
+  --fs-xs: 0.75rem;  --fs-sm: 0.875rem; --fs-base: 1rem;
+  --fs-md: 1.125rem; --fs-lg: 1.5rem;   --fs-xl: 2rem;
+  --fs-2xl: 3rem;    --fs-3xl: 5rem;
+
+  /* Spacing */
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;
+  --space-4: 16px; --space-5: 24px;  --space-6: 32px;
+  --space-7: 48px; --space-8: 64px;
+
+  /* Border radius */
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px;
+  --radius-xl: 32px; --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Z-index */
+  --z-bg: 0; --z-base: 10; --z-topbar: 100; --z-panel: 200; --z-overlay: 300;
+}
+
+/* ── App shell ──────────────────────────────────────────── */
+.app-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-base);
+  overflow: hidden;
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT PANELS — only one shown at a time via data-mode
+   ══════════════════════════════════════════════════════════ */
+.layout-panel {
+  flex: 1;
+  min-height: 0;
+  display: none;         /* hidden by default */
+}
+
+/* Show correct layout per mode */
+body[data-mode="minimalistic"] #layout-minimalistic { display: grid; }
+body[data-mode="work"]         #layout-work         { display: grid; }
+
+/* ══════════════════════════════════════════════════════════
+   MINIMALISTIC LAYOUT GRID
+   sidebar | center (clock+search+notes) | right (greeting)
+   ══════════════════════════════════════════════════════════ */
+.page-grid-minimal {
+  grid-template-columns: 72px 1fr 1fr;
+  grid-template-areas: "sidebar center right";
+  gap: clamp(16px, 2.5vw, 36px);
+  padding: clamp(24px, 3.5vw, 48px);
+  padding-bottom: clamp(14px, 2vw, 24px);
+  align-items: stretch;
+  transition: grid-template-columns 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Sidebar collapsed */
+body.sidebar-collapsed .page-grid-minimal {
+  grid-template-columns: 0px 1fr 1fr;
+}
+
+/* ── Minimalistic sidebar ──────────────────────────── */
+.col-sidebar-min {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body.sidebar-collapsed .col-sidebar-min {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Sidebar toggle handle ──────────────────────────── */
+.sidebar-toggle-handle {
+  position: absolute;
+  top: clamp(24px, 3.5vw, 48px);
+  left: 72px;
+  transform: translateX(-50%);
+  z-index: var(--z-panel);
+  width: 22px;
+  height: 48px;
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background var(--transition-fast), border-color var(--transition-fast);
+  outline: none;
+}
+
+body.sidebar-collapsed .sidebar-toggle-handle { left: 12px; }
+
+body[data-dark="true"] .sidebar-toggle-handle { border-color: var(--color-border-dark); }
+
+.sidebar-toggle-handle:hover {
+  background: var(--color-icon-btn-hover);
+  border-color: var(--color-accent);
+}
+
+.sidebar-toggle-handle .toggle-icon {
+  font-size: 0.65rem;
+  color: var(--color-text-subtle);
+  transition: transform var(--transition-fast);
+}
+
+.sidebar-toggle-handle:hover .toggle-icon { color: var(--color-text); }
+
+/* ── Minimalistic center column ─────────────────────── */
+.col-center-min {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 22px);
+  min-width: 0;
+  align-self: stretch;
+  padding-top: 0;
+}
+
+/* ── Minimalistic right column ──────────────────────── */
+.col-right-min {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  align-self: stretch;
+}
+
+/* ── Slot wrappers (minimalistic) ───────────────────── */
+.slot { width: 100%; }
+
+.slot-greeting-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.slot-note-creator {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════════════════════
+   WORK LAYOUT GRID
+   left (history) | center (search+widgets) | right (todo)
+   ══════════════════════════════════════════════════════════ */
+.page-grid-work {
+  grid-template-columns: 340px 1fr 340px;
+  grid-template-areas: "left center right";
+  gap: clamp(12px, 1.8vw, 24px);
+  padding: clamp(16px, 2.5vw, 32px);
+  padding-bottom: clamp(10px, 1.5vw, 18px);
+  align-items: stretch;
+}
+
+/* ── Work side panels ───────────────────────────────── */
+.col-left-work  { grid-area: left;   display: flex; flex-direction: column; min-width: 0; }
+.col-right-work { grid-area: right;  display: flex; flex-direction: column; min-width: 0; }
+
+/* ── Work center column ─────────────────────────────── */
+.col-center-work {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.5vw, 16px);
+  min-width: 0;
+}
+
+/* ── Panel card (history + todo shared style) ───────── */
+.panel-card {
+  flex: 1;
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-base), background var(--transition-base);
+}
+
+body[data-dark="true"] .panel-card { border-color: var(--color-border-dark); }
+
+/* ── Widget area (tabs + display) ───────────────────── */
+.widget-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vw, 14px);
+  min-height: 0;
+}
+
+.slot-search {
+  flex-shrink: 0;
+  width: 100%;
+  position: relative;
+  --moonlight-color: rgba(186, 230, 253, 0.25);
+  --moonlight-color-focus: rgba(186, 230, 253, 0.85);
+}
+
+body[data-dark="true"] .slot-search {
+  --moonlight-color: rgba(224, 242, 254, 0.1);
+  --moonlight-color-focus: rgba(224, 242, 254, 0.55);
+}
+
+/* ── Widget tabs row ────────────────────────────────── */
+.widget-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(8px, 1.2vw, 14px);
+  flex-shrink: 0;
+}
+
+.widget-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: clamp(10px, 1.5vw, 16px) 8px;
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  font-family: var(--font-primary);
+  text-align: center;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+body[data-dark="true"] .widget-tab { border-color: var(--color-border-dark); }
+
+.widget-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  background: var(--color-icon-btn-hover);
+}
+
+.widget-tab.active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  box-shadow: 0 4px 16px rgba(var(--color-accent-rgb, 45,55,72), 0.12);
+}
+
+body[data-dark="true"] .widget-tab.active {
+  border-color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.07);
+}
+
+.widget-tab-icon  { font-size: clamp(1.1rem, 1.8vw, 1.5rem); line-height: 1; }
+.widget-tab-label { font-size: clamp(0.7rem, 1vw, 0.82rem); font-weight: 600; color: var(--color-text); letter-spacing: 0.01em; }
+.widget-tab-sub   { font-size: clamp(0.58rem, 0.8vw, 0.68rem); font-weight: 400; color: var(--color-text-subtle); letter-spacing: 0.02em; }
+
+.widget-tab.active .widget-tab-label { color: var(--color-accent); }
+body[data-dark="true"] .widget-tab.active .widget-tab-label { color: var(--color-text); }
+
+/* ── Widget display ─────────────────────────────────── */
+.widget-display {
+  flex: 1;
+  background: var(--color-card-bg-solid);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-base), background var(--transition-base);
+  min-height: 0;
+}
+
+body[data-dark="true"] .widget-display { border-color: var(--color-border-dark); }
+
+/* ══════════════════════════════════════════════════════════
+   WORK MODE — Per-section colored borders (always visible)
+   Base border is strong & permanent. Hover adds glow only.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── History panel (left) — Indigo/Violet ───────────────── */
+body[data-mode="work"] #slot-history {
+  border: 2px solid rgba(99, 102, 241, 0.85);
+  transition: box-shadow var(--transition-base);
+}
+body[data-mode="work"] #slot-history:hover {
+  box-shadow: 0 0 20px 4px rgba(99, 102, 241, 0.2);
+}
+body[data-mode="work"][data-dark="true"] #slot-history {
+  border-color: rgba(129, 140, 248, 0.9);
+}
+body[data-mode="work"][data-dark="true"] #slot-history:hover {
+  box-shadow: 0 0 24px 4px rgba(129, 140, 248, 0.28);
+}
+
+/* ── Widget tabs — each tab permanently colored ──────────── */
+body[data-mode="work"] .widget-tab[data-widget="music"] {
+  border: 2px solid rgba(239, 68, 68, 0.7);
+}
+body[data-mode="work"] .widget-tab[data-widget="music"]:hover,
+body[data-mode="work"] .widget-tab[data-widget="music"].active {
+  border-color: rgba(239, 68, 68, 1);
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="music"] {
+  border-color: rgba(252, 165, 165, 0.75);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="music"]:hover,
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="music"].active {
+  border-color: rgba(252, 165, 165, 1);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+
+body[data-mode="work"] .widget-tab[data-widget="ai"] {
+  border: 2px solid rgba(16, 163, 127, 0.7);
+}
+body[data-mode="work"] .widget-tab[data-widget="ai"]:hover,
+body[data-mode="work"] .widget-tab[data-widget="ai"].active {
+  border-color: rgba(16, 163, 127, 1);
+  box-shadow: 0 4px 18px rgba(16, 163, 127, 0.25);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="ai"] {
+  border-color: rgba(52, 211, 153, 0.75);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="ai"]:hover,
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="ai"].active {
+  border-color: rgba(52, 211, 153, 1);
+  box-shadow: 0 4px 20px rgba(16, 163, 127, 0.3);
+}
+
+body[data-mode="work"] .widget-tab[data-widget="weather"] {
+  border: 2px solid rgba(59, 130, 246, 0.7);
+}
+body[data-mode="work"] .widget-tab[data-widget="weather"]:hover,
+body[data-mode="work"] .widget-tab[data-widget="weather"].active {
+  border-color: rgba(59, 130, 246, 1);
+  box-shadow: 0 4px 18px rgba(59, 130, 246, 0.25);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="weather"] {
+  border-color: rgba(147, 197, 253, 0.75);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="weather"]:hover,
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="weather"].active {
+  border-color: rgba(147, 197, 253, 1);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+body[data-mode="work"] .widget-tab[data-widget="scribble"] {
+  border: 2px solid rgba(245, 158, 11, 0.7);
+}
+body[data-mode="work"] .widget-tab[data-widget="scribble"]:hover,
+body[data-mode="work"] .widget-tab[data-widget="scribble"].active {
+  border-color: rgba(245, 158, 11, 1);
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.25);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="scribble"] {
+  border-color: rgba(253, 211, 77, 0.75);
+}
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="scribble"]:hover,
+body[data-mode="work"][data-dark="true"] .widget-tab[data-widget="scribble"].active {
+  border-color: rgba(253, 211, 77, 1);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+}
+
+/* ── Widget display board — Teal/Emerald ─────────────────── */
+body[data-mode="work"] .widget-display {
+  border: 2px solid rgba(20, 184, 166, 0.75);
+}
+body[data-mode="work"] .widget-display:hover {
+  box-shadow: 0 0 20px 3px rgba(20, 184, 166, 0.18);
+}
+body[data-mode="work"][data-dark="true"] .widget-display {
+  border-color: rgba(94, 234, 212, 0.8);
+}
+body[data-mode="work"][data-dark="true"] .widget-display:hover {
+  box-shadow: 0 0 22px 4px rgba(94, 234, 212, 0.25);
+}
+
+/* ── Todo panel (right) — Amber/Gold ────────────────────── */
+body[data-mode="work"] #slot-todo {
+  border: 2px solid rgba(245, 158, 11, 0.85);
+  transition: box-shadow var(--transition-base);
+}
+body[data-mode="work"] #slot-todo:hover {
+  box-shadow: 0 0 20px 4px rgba(245, 158, 11, 0.2);
+}
+body[data-mode="work"][data-dark="true"] #slot-todo {
+  border-color: rgba(252, 211, 77, 0.9);
+}
+body[data-mode="work"][data-dark="true"] #slot-todo:hover {
+  box-shadow: 0 0 24px 4px rgba(252, 211, 77, 0.28);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SHARED BOTTOM BAR
+   ══════════════════════════════════════════════════════════ */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(8px, 1.2vw, 16px) clamp(24px, 3.5vw, 52px);
+  z-index: var(--z-topbar);
+  background: var(--color-bottombar-bg);
+  border-top: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background var(--transition-base), border-color var(--transition-base);
+  flex-shrink: 0;
+}
+
+/* Mode toggle pill */
+.mode-toggle {
+  display: flex;
+  background: var(--color-toggle-track);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 2px;
+}
+
+.mode-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 6px 18px;
+  font-size: 0.8125rem;
+  font-family: var(--font-primary);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.mode-btn.active {
+  background: var(--color-toggle-active);
+  color: var(--color-toggle-active-text);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+}
+
+/* Live clock in bottom center */
+.bottom-clock {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: var(--color-text-subtle);
+  letter-spacing: 0.06em;
+  user-select: none;
+}
+
+/* Dark mode toggle */
+.dark-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-toggle-track);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 6px 16px;
+  font-family: var(--font-primary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  letter-spacing: 0.02em;
+}
+
+.dark-toggle-btn:hover {
+  background: var(--color-icon-btn-hover);
+  color: var(--color-text);
+}
+
+/* ── Accessibility ─────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Shared glass card */
+.glass-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: var(--space-5);
+  transition: background var(--transition-base), border-color var(--transition-base);
+}
+
+.hidden { display: none !important; }
