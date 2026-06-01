@@ -1,5 +1,8 @@
 /**
  * search.js — Search bar with multi-engine support + SVG icon
+ *
+ * Supports multiple independent instances (minimalistic + work mode)
+ * by scoping all DOM queries to the render container.
  */
 
 const SearchComponent = (() => {
@@ -12,6 +15,9 @@ const SearchComponent = (() => {
 
   const STORAGE_KEY = 'search_engine_index';
   let _idx = 0;
+
+  /** Track all rendered containers so we can sync engine pill across instances */
+  const _instances = [];
 
   const SEARCH_ICON_SVG = `
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -26,13 +32,20 @@ const SearchComponent = (() => {
     if (_idx >= ENGINES.length) _idx = 0;
   }
 
+  /** Update the engine pill in ALL rendered instances */
+  function _syncAllPills() {
+    _instances.forEach((container) => {
+      const pill = container.querySelector('.search-engine-pill');
+      const toggle = container.querySelector('.search-engine-toggle');
+      if (pill) pill.textContent = ENGINES[_idx].label;
+      if (toggle) toggle.setAttribute('data-engine', ENGINES[_idx].name.toLowerCase());
+    });
+  }
+
   function _cycleEngine() {
     _idx = (_idx + 1) % ENGINES.length;
     Storage.set({ [STORAGE_KEY]: _idx });
-    const toggle = document.getElementById('search-engine-toggle');
-    const pill = document.getElementById('search-engine-pill');
-    if (pill) pill.textContent = ENGINES[_idx].label;
-    if (toggle) toggle.setAttribute('data-engine', ENGINES[_idx].name.toLowerCase());
+    _syncAllPills();
   }
 
   function _doSearch(query) {
@@ -49,20 +62,24 @@ const SearchComponent = (() => {
   async function render(container) {
     await _loadEngine();
 
+    // Register this container for cross-instance syncing
+    if (!_instances.includes(container)) {
+      _instances.push(container);
+    }
+
     container.innerHTML = `
       <div class="section-search">
-        <div class="search-bar" id="search-bar">
+        <div class="search-bar">
           <span class="search-icon">${SEARCH_ICON_SVG}</span>
           <input
             type="text"
-            id="search-input"
             class="search-input"
             placeholder="Search or enter URL..."
             autocomplete="off"
             spellcheck="false"
           />
-          <span class="search-engine-toggle" id="search-engine-toggle" data-engine="${ENGINES[_idx].name.toLowerCase()}" title="Click to switch search engine">
-            <span id="search-engine-pill">${ENGINES[_idx].label}</span>
+          <span class="search-engine-toggle" data-engine="${ENGINES[_idx].name.toLowerCase()}" title="Click to switch search engine">
+            <span class="search-engine-pill">${ENGINES[_idx].label}</span>
           </span>
         </div>
         <div class="search-hint">
@@ -71,8 +88,9 @@ const SearchComponent = (() => {
       </div>
     `;
 
-    const input  = document.getElementById('search-input');
-    const toggle = document.getElementById('search-engine-toggle');
+    // Scope queries to THIS container — no more global getElementById
+    const input  = container.querySelector('.search-input');
+    const toggle = container.querySelector('.search-engine-toggle');
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') _doSearch(input.value);
